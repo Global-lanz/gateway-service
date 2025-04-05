@@ -2,31 +2,26 @@ spring:
   application:
     name: gateway-service
   cloud:
-    gateway:
+    config:
       discovery:
-        locator:
-          enabled: true
+        enabled: false
+    kubernetes:
+      discovery:
+        enabled: true
+    gateway:
       routes:
         - id: authentication-service
-          uri: lb://AUTHENTICATION-SERVICE
+          uri: http://authentication-service
           predicates:
             - Path=/authentication/**
         - id: company-service
-          uri: lb://COMPANY-SERVICE
+          uri: http://company-service
           predicates:
             - Path=/company/**
         - id: customer-service
-          uri: lb://CUSTOMER-SERVICE
+          uri: http://customer-service
           predicates:
             - Path=/customer/**
-        - id: eureka-server
-          uri: http://localhost:8761/
-          predicates:
-            - Path=/**
-    config:
-      discovery:
-        enabled: true
-
 logging:
   level:
     root: info
@@ -39,10 +34,7 @@ logging:
 
 #Eureka
 eureka:
-  instance:
-    prefer-ip-address: true
   client:
-    register-with-eureka: true
-    fetch-registry: true
-    serviceUrl:
-      defaultZone: http://localhost:8761/eureka
+    register-with-eureka: false
+    fetch-registry: false
+    enabled: false
