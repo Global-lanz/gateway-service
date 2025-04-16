@@ -33,7 +33,7 @@ spring:
         cors-configurations:
           '[/**]':
             allowedOrigins: ${SERVICE_REGISTRY_URL:http://localhost:4200/}
-            allowedMethods: *
+
 logging:
   level:
     root: info
