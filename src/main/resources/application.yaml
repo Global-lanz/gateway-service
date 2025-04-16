@@ -32,7 +32,7 @@ spring:
       globalcors:
         cors-configurations:
           '[/**]':
-            allowedOrigins: ${SERVICE_REGISTRY_URL:http://localhost:4200/}
+            allowedOrigins: ${ALLOWED_ORIGINS:http://localhost:4200/}
 
 logging:
   level:
