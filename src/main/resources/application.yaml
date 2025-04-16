@@ -1,4 +1,6 @@
 spring:
+  profiles:
+    active: dev
   application:
     name: gateway-service
   cloud:
@@ -8,24 +10,29 @@ spring:
           enabled: true
       routes:
         - id: authentication-service
-          uri: lb://AUTHENTICATION-SERVICE
+          uri: ${AUTHENTICATION_SERVICE_URL:lb://AUTHENTICATION-SERVICE}
           predicates:
             - Path=/authentication/**
         - id: company-service
-          uri: lb://COMPANY-SERVICE
+          uri: ${COMPANY_SERVICE_URL:lb://COMPANY-SERVICE}
           predicates:
             - Path=/company/**
         - id: customer-service
-          uri: lb://CUSTOMER-SERVICE
+          uri: ${CUSTOMER_SERVICE_URL:lb://CUSTOMER-SERVICE}
           predicates:
             - Path=/customer/**
+        - id: finance-service
+          uri: ${FINANCE_SERVICE_URL:lb://FINANCE-SERVICE}
+          predicates:
+            - Path=/finance/**
         - id: eureka-server
-          uri: http://localhost:8761/
+          uri: ${SERVICE_REGISTRY_URL:http://service-registry:8761/}
           predicates:
             - Path=/**
-    config:
-      discovery:
-        enabled: true
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: ${ALLOWED_ORIGINS:http://localhost:4200/}
 
 logging:
   level:
@@ -45,4 +52,4 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     serviceUrl:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE:http://localhost:8761/eureka}
